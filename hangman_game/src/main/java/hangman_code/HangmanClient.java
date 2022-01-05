@@ -3,6 +3,7 @@ package hangman_code;
 import java.io.*;
 import java.net.*;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.control.Button;
@@ -13,6 +14,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -23,10 +25,12 @@ public class HangmanClient extends Application
     private StackPane keyboardPane;
     private DataInputStream fromServer;
     private DataOutputStream toServer;
+    private int lengthGuessWord = 0;
 
     @Override
     public void start(Stage primaryStage)
     {
+
         BorderPane main = new BorderPane();
         Scene scene = new Scene(main);
 
@@ -35,6 +39,7 @@ public class HangmanClient extends Application
         main.setTop(hangmanPane);
         main.setBottom(keyboardPane);
         BorderPane.setAlignment(hangmanPane, Pos.CENTER);
+        BorderPane.setMargin(hangmanPane, new Insets(10, 0, 0, 0));
 
         primaryStage.setTitle("Hangman Client");
         primaryStage.setScene(scene);
@@ -51,6 +56,28 @@ public class HangmanClient extends Application
         {
             System.out.println(ex + "\n");
         }
+
+        new Thread(() -> {
+            while (lengthGuessWord == 0)
+            {
+                try
+                {
+                    lengthGuessWord = fromServer.readInt();
+                }
+                catch (IOException ex)
+                {
+                    System.out.println(ex + "\n");
+                }
+            }
+
+            initiateGuessWord();
+        }).start();
+
+    }
+
+    private void initiateGuessWord()
+    {
+
     }
 
     private void initiateKeyboard()
