@@ -15,7 +15,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class HangmanClient extends Application
+public class HangmanClient2 extends Application
 {
     private Socket socket;
     private StackPane hangmanPane;
@@ -26,8 +26,7 @@ public class HangmanClient extends Application
     private int lengthGuessWord = 0;
     private boolean playerTurn = false;
     private boolean endGame = false;
-    private Thread playGame;
-    private Thread initiateGame;
+    private Thread startGame;
     private Thread waitGameConnection;
     private Label status = new Label();
 
@@ -85,42 +84,19 @@ public class HangmanClient extends Application
                 main.setCenter(wordKeyboardContainer);
                 BorderPane.setAlignment(hangmanPane, Pos.CENTER);
                 BorderPane.setMargin(hangmanPane, new Insets(10, 0, 0, 0));
-                primaryStage.setTitle("Hangman Client 1");
+                primaryStage.setTitle("Hangman Client 2");
                 primaryStage.setScene(scene);
                 primaryStage.show();
 
                 keyboardPane.requestFocus();
-                playGame = new Thread(new PlayGame());
-                playGame.start();
+                playGame();
             });
         }
     }
-    class PlayGame implements Runnable
-    {
-        @Override
-        public void run()
-        {
-            while (!endGame)
-            {
-                if (playerTurn)
-                {
-                    registerMove();
-                }
 
-            }
-        }
-    }
-
-    private void registerMove()
+    public void playGame()
     {
-        Platform.runLater(() -> {
-            if (keyboardPane.isLetterRegistered())
-            {
-                String letter = keyboardPane.getLetterRecentlyEntered();
-                System.out.println(letter);
-                keyboardPane.setLetterRegistered(false);
-            }
-        });
+
     }
 
 
@@ -148,7 +124,7 @@ public class HangmanClient extends Application
                     System.out.println(ex + "\n");
                 }
             }
-            initiateGame = new Thread(new initiateGame(primaryStage));
+            startGame = new Thread(new initiateGame(primaryStage));
             if (playerTurn)
             {
                 status.setText("Your turn");
@@ -158,7 +134,7 @@ public class HangmanClient extends Application
                 status.setText("Waiting for the other player");
             }
 
-            initiateGame.start();
+            startGame.start();
         }
     }
 

@@ -14,8 +14,6 @@ import javafx.stage.Stage;
 public class HangmanServer extends Application
 {
     private Hangman keyWord = new Hangman("delicate");
-    private DataInputStream fromClient;
-    private DataOutputStream toClient;
     private TextArea ta = new TextArea();
     private int numberClients = 0;
     private ArrayList<Socket> players = new ArrayList<>();
@@ -45,14 +43,15 @@ public class HangmanServer extends Application
                 while (numberClients < 2)
                 {
                     Socket socket = serverSocket.accept();
+                    numberClients += 1;
                     Platform.runLater(() -> {
-                        ta.appendText("Client #" + numberClients + " connected\n");
+                        ta.appendText("Client #" + (numberClients) + " connected\n");
                     });
 
                     if (numberClients < 2)
                     {
                         Platform.runLater(() -> {
-                            ta.appendText("Waiting for Client #" + (++numberClients) + "\n");
+                            ta.appendText("Waiting for Client #" + (numberClients + 1) + "\n");
                         });
                     }
                     players.add(socket);
@@ -72,131 +71,36 @@ public class HangmanServer extends Application
         Socket socket1 = players.get(0);
         Socket socket2 = players.get(1);
 
-        try
-        {
+        try {
             fromSocket1 = new DataInputStream(socket1.getInputStream());
             fromSocket2 = new DataInputStream(socket2.getInputStream());
             toSocket1 = new DataOutputStream(socket1.getOutputStream());
             toSocket2 = new DataOutputStream(socket2.getOutputStream());
 
             toSocket1.writeInt(keyWord.getKeyWord().size());
+            toSocket1.writeBoolean(true); // indicating that it's the first player turn
             toSocket2.writeInt(keyWord.getKeyWord().size());
+            toSocket2.writeBoolean(false);
 
-        }
-        catch (IOException ex)
-        {
+        } catch (IOException ex) {
             ta.appendText(ex + "\n");
         }
 
-        new Thread(() -> {
-            while (!endGame)
+        while (!endGame)
+        {
+            if (firstPlayerTurn)
             {
                 try
                 {
-                    if (firstPlayerTurn)
-                    {
-                        endGame = fromSocket1.readBoolean();
-                    }
-                    else
-                    {
-                        endGame = fromSocket2.readBoolean();
-                    }
-                }
-                catch(IOException ex)
-                {
-                    ta.appendText(ex + "\n");
-                }
-
-            }
-        }).start();
-
-        while (!endGame)
-        {
-            char letter;
-            ArrayList<Character> word = keyWord.getKeyWord();
-            try
-            {
-                if (firstPlayerTurn)
-                {
-                    letter = fromSocket1.readChar();
-
-                    if (word.contains(letter))
-                    {
-                        toSocket1.writeInt(1);
-                    }
-                    else
-                    {
-                        toSocket1.writeInt(0);
-                    }
-                }
-                else
-                {
-                    letter = fromSocket2.readChar();
-
-                    if (word.contains(letter))
-                    {
-                        toSocket2.writeInt(1);
-                    }
-                    else
-                    {
-                        toSocket2.writeInt(0);
-                    }
-                }
-
-
-            }
-            catch (IOException ex)
-            {
-                ta.appendText(ex + "\n");
-            }
-
-            checkWinGame();
-            firstPlayerTurn = !firstPlayerTurn;
-
-        }
-    }
-
-    public void checkWinGame()
-    {
-        // check if the player won the game
-        if (keyWord.getKeyWord().size() == 0)
-        {
-            try
-            {
-                if (firstPlayerTurn)
-                {
                     toSocket1.writeBoolean(true);
                 }
-                else
+                catch (IOException ex)
                 {
-                    toSocket2.writeBoolean(true);
+                    System.out.println(ex + "\n");
                 }
-            }
-            catch(IOException ex)
-            {
-                ta.appendText(ex + "\n");
-            }
-
-            endGame = true;
-        }
-        else
-        {
-            try
-            {
-                if (firstPlayerTurn)
-                {
-                    toSocket1.writeBoolean(false);
-                }
-                else
-                {
-                    toSocket2.writeBoolean(false);
-                }
-            }
-            catch(IOException ex)
-            {
-                ta.appendText(ex + "\n");
             }
         }
     }
+
 
 }
