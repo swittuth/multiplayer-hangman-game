@@ -47,6 +47,131 @@ public class KeyboardPane extends StackPane
             clicked = true;
             letterRecentlyEntered = "a";
         });
+
+        btB.setOnAction(e -> {
+            clicked = true;
+            letterRecentlyEntered = "b";
+        });
+
+        btC.setOnAction(e -> {
+            clicked = true;
+            letterRecentlyEntered = "c";
+        });
+
+        btD.setOnAction(e -> {
+            clicked = true;
+            letterRecentlyEntered = "d";
+        });
+
+        btE.setOnAction(e -> {
+            clicked = true;
+            letterRecentlyEntered = "e";
+        });
+
+        btF.setOnAction(e -> {
+            clicked = true;
+            letterRecentlyEntered = "f";
+        });
+
+        btG.setOnAction(e -> {
+            clicked = true;
+            letterRecentlyEntered = "g";
+        });
+
+        btH.setOnAction(e -> {
+            clicked = true;
+            letterRecentlyEntered = "h";
+        });
+
+        btI.setOnAction(e -> {
+            clicked = true;
+            letterRecentlyEntered = "i";
+        });
+
+        btJ.setOnAction(e -> {
+            clicked = true;
+            letterRecentlyEntered = "j";
+        });
+
+        btK.setOnAction(e -> {
+            clicked = true;
+            letterRecentlyEntered = "k";
+        });
+
+        btL.setOnAction(e -> {
+            clicked = true;
+            letterRecentlyEntered = "l";
+        });
+
+        btM.setOnAction(e -> {
+            clicked = true;
+            letterRecentlyEntered = "m";
+        });
+
+        btN.setOnAction(e -> {
+            clicked = true;
+            letterRecentlyEntered = "n";
+        });
+
+        btO.setOnAction(e -> {
+            clicked = true;
+            letterRecentlyEntered = "o";
+        });
+
+        btP.setOnAction(e -> {
+            clicked = true;
+            letterRecentlyEntered = "p";
+        });
+
+        btQ.setOnAction(e -> {
+            clicked = true;
+            letterRecentlyEntered = "q";
+        });
+
+        btR.setOnAction(e -> {
+            clicked = true;
+            letterRecentlyEntered = "r";
+        });
+
+        btS.setOnAction(e -> {
+            clicked = true;
+            letterRecentlyEntered = "s";
+        });
+
+        btT.setOnAction(e -> {
+            clicked = true;
+            letterRecentlyEntered = "t";
+        });
+
+        btU.setOnAction(e -> {
+            clicked = true;
+            letterRecentlyEntered = "u";
+        });
+
+        btV.setOnAction(e -> {
+            clicked = true;
+            letterRecentlyEntered = "v";
+        });
+
+        btW.setOnAction(e -> {
+            clicked = true;
+            letterRecentlyEntered = "w";
+        });
+
+        btX.setOnAction(e -> {
+            clicked = true;
+            letterRecentlyEntered = "x";
+        });
+
+        btY.setOnAction(e -> {
+            clicked = true;
+            letterRecentlyEntered = "y";
+        });
+
+        btZ.setOnAction(e -> {
+            clicked = true;
+            letterRecentlyEntered = "z";
+        });
     }
 
     public void setLetterRegistered(boolean value)

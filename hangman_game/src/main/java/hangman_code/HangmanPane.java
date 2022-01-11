@@ -16,10 +16,18 @@ public class HangmanPane extends StackPane
     private Line rightArm;
     private Line leftLeg;
     private Line rightLeg;
+    private HBox headContainer;
+    private HBox bodyContainer;
+    private HBox leftArmContainer;
+    private HBox rightArmContainer;
+    private HBox leftLegContainer;
+    private HBox rightLegContainer;
     private VBox hangmanContainer;
+    private int life;
 
     public HangmanPane()
     {
+        life = 6;
         drawHanger();
     }
 
@@ -69,36 +77,79 @@ public class HangmanPane extends StackPane
         head = new Circle(5);
         head.setStroke(Color.RED);
         head.setFill(Color.WHITE);
-        HBox headContainer = new HBox(head);
+        headContainer = new HBox(head);
         headContainer.setAlignment(Pos.CENTER);
+        headContainer.setVisible(false);
 
         body = new Line(0, 0, 0, 30);
-        HBox bodyContainer = new HBox(body);
+        bodyContainer = new HBox(body);
         bodyContainer.setAlignment(Pos.CENTER);
+        bodyContainer.setVisible(false);
 
         leftArm = new Line(0, 0, 10, -10);
-        HBox leftArmContainer = new HBox(leftArm);
+        leftArmContainer = new HBox(leftArm);
         leftArmContainer.setAlignment(Pos.TOP_RIGHT);
+        leftArmContainer.setVisible(false);
 
         rightArm = new Line(0, 0, 10, 10);
-        HBox rightArmContainer = new HBox(rightArm);
+        rightArmContainer = new HBox(rightArm);
         rightArmContainer.setAlignment(Pos.TOP_LEFT);
+        rightArmContainer.setVisible(false);
 
         HBox bodyArmContainer = new HBox(leftArmContainer, bodyContainer, rightArmContainer);
         bodyArmContainer.setAlignment(Pos.CENTER);
 
         leftLeg = new Line(0,0,5,-20);
-        HBox leftLegContainer = new HBox(leftLeg);
+        leftLegContainer = new HBox(leftLeg);
         leftLegContainer.setAlignment(Pos.TOP_RIGHT);
+        leftLegContainer.setVisible(false);
 
         rightLeg = new Line(0,0,5,20);
-        HBox rightLegContainer = new HBox(rightLeg);
+        rightLegContainer = new HBox(rightLeg);
         rightLegContainer.setAlignment(Pos.TOP_LEFT);
+        rightLegContainer.setVisible(false);
 
         HBox legsContainer = new HBox(leftLegContainer, rightLegContainer);
         legsContainer.setAlignment(Pos.TOP_CENTER);
 
-
         hangmanContainer.getChildren().addAll(headContainer, bodyArmContainer, legsContainer);
+    }
+
+    public void decreaseLife()
+    {
+        life -= 1;
+        drawHangmanParts();
+    }
+
+    public void drawHangmanParts()
+    {
+        switch (life)
+        {
+            case 5:
+                headContainer.setVisible(true);
+                break;
+            case 4:
+                bodyContainer.setVisible(true);
+                break;
+            case 3:
+                leftArmContainer.setVisible(true);
+                break;
+            case 2:
+                rightArmContainer.setVisible(true);
+                break;
+            case 1:
+                leftLegContainer.setVisible(true);
+                break;
+            case 0:
+                rightLegContainer.setVisible(true);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public boolean hanged()
+    {
+        return life == 0;
     }
 }
